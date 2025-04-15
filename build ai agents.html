@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add an AI Agent To Your Org Chart in 4 Weeks</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #F06725;  /* Changed from #2563eb to #F06725 */
+    --primary-dark: #d45a1f;  /* Darker shade of orange */
+    --secondary: #10b981;
+    --dark: #1e293b;
+    --light: #f8fafc;
+    --gray: #94a3b8;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        body {
+            background-color: #ffffff;
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+            padding: 20px 0;
+            position: fixed;
+            width: 100%;
+            z-index: 100;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            border: 2px solid var(--primary);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background-color: rgba(37, 99, 235, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 180px 0 100px;
+            background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-content {
+            max-width: 600px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #1e3a8a 0%, #2563eb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero p {
+            font-size: 18px;
+            color: var(--dark);
+            margin-bottom: 30px;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .hero-image {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50%;
+            max-width: 600px;
+            z-index: 1;
+        }
+        
+        .ai-agent-visual {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><circle cx="100" cy="100" r="80" fill="none" stroke="%232563eb" stroke-width="2"/><circle cx="100" cy="100" r="60" fill="none" stroke="%232563eb" stroke-width="2"/><circle cx="100" cy="100" r="40" fill="none" stroke="%232563eb" stroke-width="2"/><circle cx="100" cy="100" r="20" fill="none" stroke="%232563eb" stroke-width="2"/></svg>') center no-repeat;
+            background-size: contain;
+        }
+        
+        .floating-element {
+            position: absolute;
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            width: 150px;
+            opacity: 0;
+        }
+        
+        .floating-element i {
+            font-size: 24px;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        /* Benefits Section */
+        .section {
+            padding: 100px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title h2 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        .section-title p {
+            font-size: 18px;
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .benefit-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .benefit-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .benefit-icon {
+            font-size: 40px;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+        
+        .benefit-card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+        
+        /* How It Works */
+        .process-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            position: relative;
+        }
+        
+        .process-steps::before {
+            content: '';
+            position: absolute;
+            left: 30px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+            z-index: 1;
+        }
+        
+        .step {
+            display: flex;
+            gap: 30px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        
+        .step-content {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            flex-grow: 1;
+        }
+        
+        .step-content h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        
+        .step-features {
+            list-style-type: none;
+            margin-top: 20px;
+        }
+        
+        .step-features li {
+            margin-bottom: 10px;
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .step-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--secondary);
+            font-weight: bold;
+        }
+        
+        /* Frameworks Section */
+        .frameworks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .framework-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        
+        .framework-card:hover {
+            transform: scale(1.05);
+        }
+        
+        .framework-logo {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 15px;
+            background-color: #f3f4f6;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: var(--primary);
+        }
+        
+        /* Industries Section */
+        .industries-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+        
+        .industry-tab {
+            padding: 10px 20px;
+            background: white;
+            border-radius: 30px;
+            cursor: pointer;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s;
+        }
+        
+        .industry-tab.active, .industry-tab:hover {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .industry-content {
+            display: none;
+        }
+        
+        .industry-content.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Case Studies */
+        .case-studies {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .case-study {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .case-study-image {
+            height: 200px;
+            background-color: #e2e8f0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .case-study-content {
+            padding: 30px;
+        }
+        
+        .case-study h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+        
+        .case-study p {
+            margin-bottom: 15px;
+        }
+        
+        /* Our Org Chart */
+        .org-chart {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .org-node {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--primary);
+            position: relative;
+            transition: transform 0.3s;
+        }
+        
+        .org-node:hover {
+            transform: translateX(10px);
+        }
+        
+        .org-node h4 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+        
+        .org-node p {
+            color: var(--gray);
+        }
+        
+        /* CTA Section */
+        .cta {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+            border-radius: 12px;
+            margin: 100px 0;
+        }
+        
+        .cta h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        
+        .cta p {
+            font-size: 18px;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            opacity: 0.9;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+        
+        .btn-white {
+            background-color: white;
+            color: var(--primary);
+            border: 2px solid white;
+        }
+        
+        .btn-white:hover {
+            background-color: transparent;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .btn-transparent {
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+        
+        .btn-transparent:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 60px 0 30px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: var(--light);
+        }
+        
+        .footer-column ul {
+            list-style-type: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column ul li a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-column ul li a:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--gray);
+        }
+        
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero-image {
+                opacity: 0.3;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .hero-buttons, .cta-buttons {
+                flex-direction: column;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <i class="fas fa-robot"></i>
+                    <span>AI Agents</span>
+                </div>
+                <div class="nav-links">
+                    <a href="#benefits">Benefits</a>
+                    <a href="#process">Process</a>
+                    <a href="#frameworks">Frameworks</a>
+                    <a href="#industries">Industries</a>
+                    <a href="#casestudies">Case Studies</a>
+                </div>
+                <div class="cta-buttons">
+                    <a href="#contact" class="btn btn-outline">Learn More</a>
+                    <a href="#org-chart" class="btn btn-primary">AI Agent Org Chart</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Add an AI Agent To Your Org Chart in 4 Weeks</h1>
+                <p>With years of experience in building AI and automation solutions, we help you identify AI agent team members, calculate ROI, and deliver the first AI Agent team member in just 4 weeks - No hiring headaches, just smart results.</p>
+                <div class="hero-buttons">
+                    <a href="#process" class="btn btn-primary">Let's Start</a>
+                    <a href="#org-chart" class="btn btn-outline">AI Agent Org Chart</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="ai-agent-visual" id="agent-visual">
+                    <div class="floating-element" style="top: 20%; left: 20%;">
+                        <i class="fas fa-headset"></i>
+                        <p>Customer Support Agent</p>
+                    </div>
+                    <div class="floating-element" style="top: 60%; left: 10%;">
+                        <i class="fas fa-tasks"></i>
+                        <p>Project Manager</p>
+                    </div>
+                    <div class="floating-element" style="top: 30%; right: 15%;">
+                        <i class="fas fa-chart-line"></i>
+                        <p>Data Analyst</p>
+                    </div>
+                    <div class="floating-element" style="bottom: 10%; right: 20%;">
+                        <i class="fas fa-file-alt"></i>
+                        <p>Content Assistant</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Intro Section -->
+    <section class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>What if you could add a dedicated, intelligent team member that works 24/7, never gets tired, and scales with your needs?</h2>
+                <p>That's where Tailored AI Agents come in. We help you identify, build, and deploy AI agents that fit seamlessly into your workflows—like adding a new role to your org chart, but faster, smarter, and more cost-effective.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="section" id="benefits" style="background-color: #f9fafb;">
+        <div class="container">
+            <div class="section-title">
+                <h2>Why Add an AI Agent to Your Team?</h2>
+            </div>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3>Productivity Gain</h3>
+                    <p>Your team spends hours on repetitive tasks—AI agents handle them instantly. Free up time for work that truly matters.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-expand"></i>
+                    </div>
+                    <h3>Scale Faster</h3>
+                    <p>No hiring delays or training bottlenecks. AI agents work 24/7, letting you grow without extra headcount.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h3>Competitive Advantage</h3>
+                    <p>Outpace competitors with faster decisions, smarter automation, and always-on customer support—all at a fraction of the cost.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section class="section" id="process">
+        <div class="container">
+            <div class="section-title">
+                <h2>How It Works</h2>
+                <p>From discovery to deployment, we guide you through every step of integrating AI agents into your organization.</p>
+            </div>
+            <div class="process-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>AI Agent Discovery</h3>
+                        <p>Not sure where AI fits in your business? We'll help you find the best opportunities with clear ROI.</p>
+                        <ul class="step-features">
+                            <li>Identify high-impact tasks for automation</li>
+                            <li>Define measurable outcomes</li>
+                            <li>Build a roadmap for AI adoption</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Custom AI Agent Development</h3>
+                        <p>We design AI agents tailored to your needs—like a new team member, but built for your exact workflows.</p>
+                        <ul class="step-features">
+                            <li>Specialized in your industry & processes</li>
+                            <li>Integrates with your existing tools</li>
+                            <li>Trained on your data, your way</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Ongoing AI Support</h3>
+                        <p>Your AI agent keeps improving with expert maintenance and updates.</p>
+                        <ul class="step-features">
+                            <li>Performance monitoring & optimization</li>
+                            <li>Regular upgrades & new features</li>
+                            <li>Dedicated support when you need it</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Frameworks Section -->
+    <section class="section" id="frameworks" style="background-color: #f9fafb;">
+        <div class="container">
+            <div class="section-title">
+                <h2>AI Agent Frameworks We Use</h2>
+                <p>We build agents using the best tools for your needs</p>
+            </div>
+            <div class="frameworks-grid">
+                <div class="framework-card">
+                    <div class="framework-logo">
+                        <i class="fas fa-link"></i>
+                    </div>
+                    <h4>Langchain</h4>
+                </div>
+                <div class="framework-card">
+                    <div class="framework-logo">
+                        <i class="fab fa-microsoft"></i>
+                    </div>
+                    <h4>AutoGen</h4>
+                </div>
+                <div class="framework-card">
+                    <div class="framework-logo">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h4>CrewAI</h4>
+                </div>
+                <div class="framework-card">
+                    <div class="framework-logo">
+                        <i class="fas fa-baby"></i>
+                    </div>
+                    <h4>BabyAGI</h4>
+                </div>
+                <div class="framework-card">
+                    <div class="framework-logo">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h4>AutoGPT</h4>
+                </div>
+                <div class="framework-card">
+                    <div class="framework-logo">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h4>Hugging Face</h4>
+                </div>
+                <div class="framework-card">
+                    <div class="framework-logo">
+                        <i class="fab fa-microsoft"></i>
+                    </div>
+                    <h4>Semantic Kernel</h4>
+                </div>
+                <div class="framework-card">
+                    <div class="framework-logo">
+                        <i class="fas fa-microphone"></i>
+                    </div>
+                    <h4>Voice Agents</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Industries Section -->
+    <section class="section" id="industries">
+        <div class="container">
+            <div class="section-title">
+                <h2>AI Agents in Your Org Chart (By Industry & Department)</h2>
+                <p>AI agents aren't just tools—they're team members. Here's how they fit into different industries:</p>
+            </div>
+            <div class="industries-tabs">
+                <div class="industry-tab active" data-tab="sales">Sales</div>
+                <div class="industry-tab" data-tab="support">Customer Support</div>
+                <div class="industry-tab" data-tab="operations">Operations</div>
+                <div class="industry-tab" data-tab="hr">HR & Hiring</div>
+                <div class="industry-tab" data-tab="marketing">Marketing</div>
+            </div>
+            <div class="industry-content active" id="sales-content">
+                <div class="org-chart">
+                    <div class="org-node">
+                        <h4>AI Sales Assistant</h4>
+                        <p>Qualifies leads, schedules meetings, and provides real-time sales data</p>
+                    </div>
+                    <div class="org-node">
+                        <h4>CRM Automation Agent</h4>
+                        <p>Updates records, logs interactions, and triggers follow-ups automatically</p>
+                    </div>
+                    <div class="org-node">
+                        <h4>Sales Forecasting Agent</h4>
+                        <p>Analyzes pipeline data to predict revenue and identify risks</p>
+                    </div>
+                </div>
+            </div>
+            <div class="industry-content" id="support-content">
+                <div class="org-chart">
+                    <div class="org-node">
+                        <h4>24/7 Support Agent</h4>
+                        <p>Handles common customer inquiries via chat or voice</p>
+                    </div>
+                    <div class="org-node">
+                        <h4>Escalation Manager</h4>
+                        <p>Routes complex issues to the right human agent</p>
+                    </div>
+                    <div class="org-node">
+                        <h4>Sentiment Analyzer</h4>
+                        <p>Monitors customer satisfaction in real-time</p>
+                    </div>
+                </div>
+            </div>
+            <div class="industry-content" id="operations-content">
+                <div class="org-chart">
+                    <div class="org-node">
+                        <h4>Process Optimization Agent</h4>
+                        <p>Identifies inefficiencies and suggests improvements</p>
+                    </div>
+                    <div class="org-node">
+                        <h4>Inventory Manager</h4>
+                        <p>Automates stock monitoring and reordering</p>
+                    </div>
+                    <div class="org-node">
+                        <h4>Logistics Coordinator</h4>
+                        <p>Optimizes shipping routes and schedules</p>
+                    </div>
+                </div>
+            </div>
+            <div class="industry-content" id="hr-content">
+                <div class="org-chart">
+                    <div class="org-node">
+                        <h4>AI Recruiter</h4>
+                        <p>Screens resumes and schedules interviews</p>
+                    </div>
+                    <div class="org-node">
+                        <h4>Onboarding Assistant</h4>
+                        <p>Guides new hires through paperwork and training</p>
+                    </div>
+                    <div class="org-node">
+                        <h4>Employee Engagement Bot</h4>
+                        <p>Conducts pulse surveys and identifies retention risks</p>
+                    </div>
+                </div>
+            </div>
+            <div class="industry-content" id="marketing-content">
+                <div class="org-chart">
+                    <div class="org-node">
+                        <h4>Content Generator</h4>
+                        <p>Creates drafts for blogs, social media, and ads</p>
+                    </div>
+                    <div class="org-node">
+                        <h4>Campaign Optimizer</h4>
+                        <p>Adjusts bids and targeting in real-time</p>
+                    </div>
+                    <div class="org-node">
+                        <h4>Social Media Manager</h4>
+                        <p>Schedules posts and engages with followers</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Case Studies -->
+    <section class="section" id="casestudies" style="background-color: #f9fafb;">
+        <div class="container">
+            <div class="section-title">
+                <h2>AI Agents In Action</h2>
+                <p>Real-world examples of how AI agents are transforming businesses</p>
+            </div>
+            <div class="case-studies">
+                <div class="case-study">
+                    <div class="case-study-image"></div>
+                    <div class="case-study-content">
+                        <h3>E-commerce Support Transformation</h3>
+                        <p><strong>Problem:</strong> 24/7 customer support needs with seasonal spikes</p>
+                        <p><strong>Solution:</strong> Deployed AI support agents handling 80% of inquiries</p>
+                        <p><strong>Result:</strong> 65% reduction in support costs, 40% faster response times</p>
+                    </div>
+                </div>
+                <div class="case-study">
+                    <div class="case-study-image"></div>
+                    <div class="case-study-content">
+                        <h3>Financial Services Automation</h3>
+                        <p><strong>Problem:</strong> Manual loan application processing taking 5+ days</p>
+                        <p><strong>Solution:</strong> AI document processing and decision agents</p>
+                        <p><strong>Result:</strong> 90% of applications processed in under 1 hour</p>
+                    </div>
+                </div>
+                <div class="case-study">
+                    <div class="case-study-image"></div>
+                    <div class="case-study-content">
+                        <h3>Healthcare Appointment System</h3>
+                        <p><strong>Problem:</strong> High no-show rates and scheduling inefficiencies</p>
+                        <p><strong>Solution:</strong> AI scheduling assistant with automated reminders</p>
+                        <p><strong>Result:</strong> 30% reduction in no-shows, 50% less admin work</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Org Chart -->
+    <section class="section" id="org-chart">
+        <div class="container">
+            <div class="section-title">
+                <h2>We're an AI Agent First Company</h2>
+                <p>We don't just build AI agents—we use them daily. Here's how AI fits into our org chart:</p>
+            </div>
+            <div class="org-chart">
+                <div class="org-node">
+                    <h4>AI Project Manager</h4>
+                    <p>Tracks deadlines, assigns tasks, and monitors progress across teams</p>
+                </div>
+                <div class="org-node">
+                    <h4>AI QA Tester</h4>
+                    <p>Automates bug detection and regression testing for our products</p>
+                </div>
+                <div class="org-node">
+                    <h4>AI Content Assistant</h4>
+                    <p>Helps draft and edit copy for marketing and documentation</p>
+                </div>
+                <div class="org-node">
+                    <h4>AI Customer Onboarding Agent</h4>
+                    <p>Guides new clients through setup and answers common questions</p>
+                </div>
+            </div>
+            <div class="section-title" style="margin-top: 60px;">
+                <p>Want to see how AI can fit into your team? Let's talk.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="section">
+        <div class="container">
+            <div class="cta">
+                <h2>Ready to Add an AI Team Member?</h2>
+                <p>🚀 Book a free AI Discovery Call – Let's find the best AI solution for your business.</p>
+                <div class="cta-buttons">
+                    <a href="#contact" class="btn btn-white">Get Started Now</a>
+                    <a href="#casestudies" class="btn btn-transparent">See Case Studies</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>AI Agents</h3>
+                    <p>Transforming enterprises by adding intelligent AI team members in just 4 weeks.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Services</h3>
+                    <ul>
+                        <li><a href="#process">AI Agent Discovery</a></li>
+                        <li><a href="#process">Custom Development</a></li>
+                        <li><a href="#process">Ongoing Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Industries</h3>
+                    <ul>
+                        <li><a href="#industries">Sales</a></li>
+                        <li><a href="#industries">Customer Support</a></li>
+                        <li><a href="#industries">Operations</a></li>
+                        <li><a href="#industries">HR</a></li>
+                        <li><a href="#industries">Marketing</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact</h3>
+                    <ul>
+                        <li><a href="mailto:info@aiagents.com">info@aiagents.com</a></li>
+                        <li><a href="tel:+18005551234">(800) 555-1234</a></li>
+                        <li><a href="#">Schedule a Call</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 AI Agents. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- GSAP Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+    <script>
+        // Register ScrollTrigger plugin
+        gsap.registerPlugin(ScrollTrigger);
+        
+        // Hero animation
+        gsap.from(".hero-content h1", {
+            duration: 1,
+            y: 50,
+            opacity: 0,
+            ease: "power3.out"
+        });
+        
+        gsap.from(".hero-content p", {
+            duration: 1,
+            y: 50,
+            opacity: 0,
+            delay: 0.2,
+            ease: "power3.out"
+        });
+        
+        gsap.from(".hero-buttons", {
+            duration: 1,
+            y: 50,
+            opacity: 0,
+            delay: 0.4,
+            ease: "power3.out"
+        });
+        
+        // Animate floating elements in hero
+        const floatingElements = document.querySelectorAll(".floating-element");
+        floatingElements.forEach((el, index) => {
+            gsap.fromTo(el, 
+                { opacity: 0, y: 20 },
+                { 
+                    opacity: 1, 
+                    y: 0,
+                    duration: 1,
+                    delay: 0.6 + (index * 0.2),
+                    ease: "power2.out"
+                }
+            );
+            
+            // Add continuous floating animation
+            gsap.to(el, {
+                y: 10,
+                duration: 3 + Math.random() * 2,
+                repeat: -1,
+                yoyo: true,
+                ease: "sine.inOut"
+            });
+        });
+        
+        // Animate benefit cards on scroll
+        gsap.utils.toArray(".benefit-card").forEach(card => {
+            gsap.from(card, {
+                scrollTrigger: {
+                    trigger: card,
+                    start: "top 80%",
+                    toggleActions: "play none none none"
+                },
+                y: 50,
+                opacity: 0,
+                duration: 0.8,
+                ease: "power2.out"
+            });
+        });
+        
+        // Animate process steps
+        gsap.utils.toArray(".step").forEach((step, i) => {
+            gsap.from(step, {
+                scrollTrigger: {
+                    trigger: step,
+                    start: "top 70%",
+                    toggleActions: "play none none none"
+                },
+                x: i % 2 === 0 ? -50 : 50,
+                opacity: 0,
+                duration: 0.8,
+                delay: i * 0.1,
+                ease: "power2.out"
+            });
+        });
+        
+        // Industry tabs functionality
+        const tabs = document.querySelectorAll(".industry-tab");
+        const contents = document.querySelectorAll(".industry-content");
+        
+        tabs.forEach(tab => {
+            tab.addEventListener("click", () => {
+                // Remove active class from all tabs and contents
+                tabs.forEach(t => t.classList.remove("active"));
+                contents.forEach(c => c.classList.remove("active"));
+                
+                // Add active class to clicked tab
+                tab.classList.add("active");
+                
+                // Show corresponding content
+                const tabId = tab.getAttribute("data-tab");
+                document.getElementById(`${tabId}-content`).classList.add("active");
+                
+                // Animate content
+                gsap.from(`#${tabId}-content`, {
+                    opacity: 0,
+                    y: 20,
+                    duration: 0.5,
+                    ease: "power2.out"
+                });
+            });
+        });
+        
+        // Animate framework cards
+        gsap.utils.toArray(".framework-card").forEach((card, i) => {
+            gsap.from(card, {
+                scrollTrigger: {
+                    trigger: card,
+                    start: "top 80%",
+                    toggleActions: "play none none none"
+                },
+                scale: 0.8,
+                opacity: 0,
+                duration: 0.5,
+                delay: i * 0.05,
+                ease: "back.out"
+            });
+        });
+        
+        // Animate case studies
+        gsap.utils.toArray(".case-study").forEach((study, i) => {
+            gsap.from(study, {
+                scrollTrigger: {
+                    trigger: study,
+                    start: "top 80%",
+                    toggleActions: "play none none none"
+                },
+                y: 50,
+                opacity: 0,
+                duration: 0.8,
+                delay: i * 0.1,
+                ease: "power2.out"
+            });
+        });
+        
+        // Animate org chart nodes
+        gsap.utils.toArray(".org-node").forEach((node, i) => {
+            gsap.from(node, {
+                scrollTrigger: {
+                    trigger: node,
+                    start: "top 80%",
+                    toggleActions: "play none none none"
+                },
+                x: i % 2 === 0 ? -30 : 30,
+                opacity: 0,
+                duration: 0.6,
+                delay: i * 0.1,
+                ease: "power2.out"
+            });
+        });
+        
+        // CTA animation
+        gsap.from(".cta", {
+            scrollTrigger: {
+                trigger: ".cta",
+                start: "top 80%",
+                toggleActions: "play none none none"
+            },
+            scale: 0.95,
+            opacity: 0,
+            duration: 1,
+            ease: "power2.out"
+        });
+    </script>
+</body>
+</html>
